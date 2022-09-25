@@ -19,12 +19,10 @@ const App = () => {
           <h2 className="content__title">Все пиццы</h2>
           <div className="content__items">
             {
-              pizzas.map(pizza => (
-                <PizzaBlock title={pizza.title} price={pizza.price} />
+              pizzas.map(obj => (
+                <PizzaBlock {...obj} />
               ))
             }
-            {/* <PizzaBlock title="Мексиканская" price="500"/> */}
-            {/* <PizzaBlock title="Чизбургер-пицца" price="350" /> */}
           </div>
         </div>
       </div>
