@@ -8,13 +8,15 @@ import './scss/app.scss';
 
 const App = () => {
   const [items, setItems] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     fetch('https://633089a9f5fda801f8e26915.mockapi.io/items')
       .then(response => response.json())
       .then((arr) => {
-      setItems(arr);
-    });
+        setItems(arr);
+        setIsLoading(false);
+      });
   }, [])
 
   return (
@@ -28,10 +30,9 @@ const App = () => {
           </div>
           <h2 className="content__title">Все пиццы</h2>
           <div className="content__items">
-            {
-              items.map(obj => (
-                <Skeleton key={obj.id} {...obj} />
-              ))
+            {isLoading
+              ? [...new Array(6)].map((_, index) => <Skeleton key={index} />)
+              : items.map(obj => <PizzaBlock key={obj.id} {...obj} />)
             }
           </div>
         </div>
