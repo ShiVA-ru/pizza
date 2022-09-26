@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import Categories from './components/Categories';
 import Header from './components/Header';
 import PizzaBlock from './components/PizzaBlock';
+import Skeleton from './components/PizzaBlock/Skeleton';
 import Sort from './components/Sort';
 import './scss/app.scss';
 
@@ -29,7 +30,7 @@ const App = () => {
           <div className="content__items">
             {
               items.map(obj => (
-                <PizzaBlock key={obj.id} {...obj} />
+                <Skeleton key={obj.id} {...obj} />
               ))
             }
           </div>
