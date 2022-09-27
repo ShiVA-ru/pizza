@@ -9,7 +9,8 @@ const PizzaBlock = ({title, price, imageUrl, types, sizes}) => {
     'традиционное'
   ]
   return (
-    <div className="pizza-block" >
+    <div className="pizza-block-wrapper">
+      <div className="pizza-block" >
       <img
         className="pizza-block__image"
         src={imageUrl}
@@ -50,6 +51,7 @@ const PizzaBlock = ({title, price, imageUrl, types, sizes}) => {
           <i>0</i>
         </button>
       </div>
+    </div>
     </div>
   )
 }
