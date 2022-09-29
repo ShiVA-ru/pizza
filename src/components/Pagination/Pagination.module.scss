@@ -2,24 +2,36 @@
   li {
     display: inline-block;
     margin-right: 10px;
-  }
-  a {
-    display: inline-flex;
-    justify-content: center;
-    align-items: center;
-    width: 40px;
-    height: 40px;
-    padding: 10px;
-    color: #fe5f1e;
-    line-height: 1;
-    border: 1px solid #fe5f1e;
-    border-radius: 30px;
-    cursor: pointer;
-    transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out;
 
-    &:hover {
-      background-color: #fe5f1e;
-      color: #fff;
+
+
+    a {
+      display: inline-flex;
+      justify-content: center;
+      align-items: center;
+      width: 40px;
+      height: 40px;
+      padding: 10px;
+      color: #fe5f1e;
+      line-height: 1;
+      border: 1px solid #fe5f1e;
+      border-radius: 30px;
+      cursor: pointer;
+      transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out;
+
+      &:hover {
+        background-color: #fe5f1e;
+        color: #fff;
+      }
+    }
+  }
+
+  :global {
+    .selected {
+      a {
+        background-color: #fe5f1e;
+        color: #fff;
+      }
     }
   }
 }
