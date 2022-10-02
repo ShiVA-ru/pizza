@@ -6,10 +6,10 @@ import { Routes, Route } from "react-router-dom";
 import './scss/app.scss';
 import Cart from './pages/Cart';
 import { useState } from 'react';
+
 export const SearchContext = React.createContext();
 
 const App = () => {
-  // console.log(SearchContext)
   const [searchValue, setSearchValue] = useState('');
   return (
     <div className="wrapper">
