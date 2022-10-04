@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState, useRef } from 'react';
 import qs from 'qs';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
@@ -14,6 +14,8 @@ import { setCategoryId, setCurrentPage, setFilters } from '../redux/slices/filte
 const Home = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const isSearch = useRef(false);
+  const isMounted = useRef(false);
   const { categoryId, sort, currentPage } = useSelector((state) => state.filter);
   const sortType = sort.sortProperty;
   const {searchValue} = useContext(SearchContext);
@@ -28,19 +30,7 @@ const Home = () => {
     dispatch(setCurrentPage(number));
   }
 
-  useEffect(() => {
-    if (window.location.search) {
-      const params = qs.parse(window.location.search.substring(1));
-      const sort = sortList.find((obj) => obj.sortProperty === params.sortProperty);
-      dispatch(setFilters({
-          ...params,
-          sort,
-        }),
-      );
-    }
-  }, []);
-
-  useEffect(() => {
+  const fetchPizzas = () => {
     setIsLoading(true);
     const sortBy = sortType.replace('-', '');
     const order = sortType.includes('-') ? 'asc' : 'desc';
@@ -55,17 +45,43 @@ const Home = () => {
         setItems(response.data);
         setIsLoading(false);
       });
+  }
 
-      window.scrollTo(0, 0);
+  // Если был первый рендер, то проверяем URL-параметры и сохраняем в Redux
+  useEffect(() => {
+    if (window.location.search) {
+      const params = qs.parse(window.location.search.substring(1));
+      const sort = sortList.find((obj) => obj.sortProperty === params.sortProperty);
+      dispatch(setFilters({
+          ...params,
+          sort,
+        }),
+      );
+      isSearch.current = true;
+    }
+  }, []);
+  
+  // Если был первый рендер, то запрашиваем пиццы
+  useEffect(() => {
+    window.scrollTo(0, 0);
+
+    if (!isSearch.current) {
+      fetchPizzas();
+    }
+    isSearch.current = false;
   }, [categoryId, sortType, searchValue, currentPage]);
 
+  // Если изменили параметры и был первый рендер, то вшивай параметры в адресную строчку
   useEffect(() => {
-    const queryString = qs.stringify({
-      sortProperty: sortType,
-      categoryId,
-      currentPage,
-    });
-    navigate(`?${queryString}`)
+    if (isMounted.current) {
+      const queryString = qs.stringify({
+        sortProperty: sortType,
+        categoryId,
+        currentPage,
+      });
+      navigate(`?${queryString}`);
+    }
+    isMounted.current = true;
   }, [categoryId, sortType, currentPage]);
 
 
