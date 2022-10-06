@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
-import { addProduct, removeItem, clearItems } from '../redux/slices/cartSlice';
+import { clearItems } from '../redux/slices/cartSlice';
 import CartItem from '../components/CartItem';
 import CartEmpty from '../components/CartEmpty';
 
@@ -71,4 +71,4 @@ const Cart = () => {
   )
 }
 
-export default Cart
+export default Cart;

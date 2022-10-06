@@ -30,21 +30,26 @@ const Home = () => {
     dispatch(setCurrentPage(number));
   }
 
-  const fetchPizzas = () => {
+  const fetchPizzas = async () => {
     setIsLoading(true);
     const sortBy = sortType.replace('-', '');
     const order = sortType.includes('-') ? 'asc' : 'desc';
     const category = categoryId > 0 ? `category=${categoryId}` : '';
     const search = searchValue ? `&search=${searchValue}` : '';
 
-    axios
-      .get(
-        `https://633089a9f5fda801f8e26915.mockapi.io/items?page=${currentPage}&limit=4&${category}&sortBy=${sortBy}&order=${order}${search}`
-        )
-      .then(response => {
-        setItems(response.data);
-        setIsLoading(false);
-      });
+    try {
+      const { data } = await axios
+        .get(
+          `https://633089a9f5fda801f8e26915.mockapi.io/items?page=${currentPage}&limit=4&${category}&sortBy=${sortBy}&order=${order}${search}`
+        );
+      setItems(data);
+    } catch (error) {
+      console.log(error, 'ПРОИЗОШЛА ОШИБКА');
+    } finally {
+      setIsLoading(false);
+    }
+
+    window.scrollTo(0, 0);
   }
 
   // Если был первый рендер, то проверяем URL-параметры и сохраняем в Redux
@@ -60,7 +65,7 @@ const Home = () => {
       isSearch.current = true;
     }
   }, []);
-  
+
   // Если был первый рендер, то запрашиваем пиццы
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -83,8 +88,6 @@ const Home = () => {
     }
     isMounted.current = true;
   }, [categoryId, sortType, currentPage]);
-
-
 
   const pizzas = items.map(obj => <PizzaBlock key={obj.id} {...obj} />);
   const skeletons = [...new Array(6)].map((_, index) => <Skeleton key={index} />);
