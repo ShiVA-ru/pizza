@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useRef } from 'react';
 import qs from 'qs';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import Categories from '../components/Categories';
 import PizzaBlock from '../components/PizzaBlock';
 import Skeleton from '../components/PizzaBlock/Skeleton';
@@ -82,7 +82,11 @@ const Home = () => {
     isMounted.current = true;
   }, [categoryId, sortType, currentPage]);
 
-  const pizzas = items.map(obj => <PizzaBlock key={obj.id} {...obj} />);
+  const pizzas = items.map(obj =>
+    <Link to={`/pizza/${obj.id}`} key={obj.id} >
+      <PizzaBlock {...obj} />
+    </Link>
+  );
   const skeletons = [...new Array(6)].map((_, index) => <Skeleton key={index} />);
 
   return (
