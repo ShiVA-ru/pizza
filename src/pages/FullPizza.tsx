@@ -6,7 +6,7 @@ const FullPizza: FC = () => {
   const [pizza, setPizza] = useState<{
     imageUrl: string;
     title: string;
-    price: number
+    price: number;
   }>();
   const { id } = useParams();
   const navigate = useNavigate();
@@ -26,18 +26,20 @@ const FullPizza: FC = () => {
   }, []);
 
   if (!pizza) {
-    return <div className='container'>
-      <h4>Загрузка...</h4>
-    </div>
+    return (
+      <div className="container">
+        <h4>Загрузка...</h4>
+      </div>
+    );
   }
 
   return (
-    <div className='container'>
+    <div className="container">
       <img src={pizza.imageUrl} alt="" />
       <h1>{pizza.title}</h1>
       <h2>{pizza.price} ₽</h2>
     </div>
-  )
-}
+  );
+};
 
 export default FullPizza;

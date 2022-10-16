@@ -1,5 +1,4 @@
 import { FC, useCallback, useEffect, useRef } from 'react';
-import qs from 'qs';
 import { useNavigate } from 'react-router-dom';
 import Categories from '../components/Categories';
 import PizzaBlock from '../components/PizzaBlock';
@@ -7,10 +6,11 @@ import Skeleton from '../components/PizzaBlock/Skeleton';
 import Sort from '../components/Sort';
 import Pagination from '../components/Pagination';
 import { useSelector } from 'react-redux';
-import { selectFilter, setCategoryId, setCurrentPage, setFilters } from '../redux/slices/filterSlice';
-import { fetchPizzas, selectPizza } from '../redux/slices/pizzaSlice';
 import { useAppDispatch } from '../redux/store';
-import { FetchPizzasArgs } from '../redux/slices/pizzaSlice';
+import { selectFilter } from '../redux/filter/selectors';
+import { selectPizza } from '../redux/pizza/selectors';
+import { setCategoryId, setCurrentPage } from '../redux/filter/slice';
+import { fetchPizzas } from '../redux/pizza/asyncActions';
 
 const Home: FC = () => {
   const navigate = useNavigate();
@@ -18,16 +18,16 @@ const Home: FC = () => {
   const isSearch = useRef(false);
   const isMounted = useRef(false);
   const { categoryId, sort, currentPage, searchValue } = useSelector(selectFilter);
-  const { status, items} = useSelector(selectPizza);
+  const { status, items } = useSelector(selectPizza);
   const sortType = sort.sortProperty;
 
   const onChangeCategory = useCallback((id: number) => {
     dispatch(setCategoryId(id));
-  }, [])
+  }, []);
 
   const onChangePage = (page: number) => {
     dispatch(setCurrentPage(page));
-  }
+  };
 
   const getPizzas = async () => {
     const sortBy = sortType.replace('-', '');
@@ -42,11 +42,12 @@ const Home: FC = () => {
         order,
         category,
         search,
-        currentPage
-      }));
+        currentPage,
+      }),
+    );
 
     window.scrollTo(0, 0);
-  }
+  };
 
   // Если был первый рендер, то проверяем URL-параметры и сохраняем в Redux
   // useEffect(() => {
@@ -87,28 +88,27 @@ const Home: FC = () => {
     // isMounted.current = true;
   }, [categoryId, sort.sortProperty, searchValue, currentPage]);
 
-  const pizzas = items.map((obj: any) => <PizzaBlock key={obj.id} {...obj} /> );
+  const pizzas = items.map((obj: any) => <PizzaBlock key={obj.id} {...obj} />);
   const skeletons = [...new Array(6)].map((_, index) => <Skeleton key={index} />);
 
   return (
     <div className="container">
       <div className="content__top">
         <Categories value={categoryId} onChangeCategory={onChangeCategory} />
-        <Sort value = {sort}/>
+        <Sort value={sort} />
       </div>
       <h2 className="content__title">Все пиццы</h2>
-      {
-        status === 'error' ? <div className='content__error-info'>
+      {status === 'error' ? (
+        <div className="content__error-info">
           <h2>Warning is detected!!! 😕</h2>
-          <p>
-            Can't get pissaz...
-            Sorey. Please, try later...
-          </p>
-        </div>: <div className="content__items">{status === 'loading' ? skeletons : pizzas}</div>
-      }
-      <Pagination currentPage={currentPage} onChangePage={onChangePage}/>
+          <p>Can't get pissaz... Sorey. Please, try later...</p>
+        </div>
+      ) : (
+        <div className="content__items">{status === 'loading' ? skeletons : pizzas}</div>
+      )}
+      <Pagination currentPage={currentPage} onChangePage={onChangePage} />
     </div>
-  )
-}
+  );
+};
 
 export default Home;

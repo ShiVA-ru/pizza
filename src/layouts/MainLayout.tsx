@@ -7,10 +7,10 @@ const MainLayout: FC = () => {
     <div className="wrapper">
       <Header />
       <div className="content">
-        <Outlet/>
+        <Outlet />
       </div>
     </div>
-  )
-}
+  );
+};
 
 export default MainLayout;
