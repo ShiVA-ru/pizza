@@ -2,6 +2,7 @@ import React, { FC, useState } from 'react';
 import { useEffect } from 'react';
 import { useRef } from 'react';
 import { useDispatch } from 'react-redux';
+
 import { setSort } from '../redux/filter/slice';
 import { sortPropertyEnum, SortType } from '../redux/filter/types';
 

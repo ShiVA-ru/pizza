@@ -1,6 +1,7 @@
 import { FC, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
+
 import { selectCartItemById } from '../../redux/cart/selectors';
 import { addItem } from '../../redux/cart/slice';
 import { CartItemType } from '../../redux/cart/types';
