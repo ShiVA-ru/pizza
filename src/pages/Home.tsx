@@ -1,4 +1,4 @@
-import { FC, useEffect, useRef } from 'react';
+import { FC, useCallback, useEffect, useRef } from 'react';
 import qs from 'qs';
 import { useNavigate } from 'react-router-dom';
 import Categories from '../components/Categories';
@@ -21,9 +21,9 @@ const Home: FC = () => {
   const { status, items} = useSelector(selectPizza);
   const sortType = sort.sortProperty;
 
-  const onChangeCategory = (id: number) => {
+  const onChangeCategory = useCallback((id: number) => {
     dispatch(setCategoryId(id));
-  }
+  }, [])
 
   const onChangePage = (page: number) => {
     dispatch(setCurrentPage(page));
@@ -34,6 +34,7 @@ const Home: FC = () => {
     const order = sortType.includes('-') ? 'asc' : 'desc';
     const category = categoryId > 0 ? `category=${categoryId}` : '';
     const search = searchValue ? `&search=${searchValue}` : '';
+    // const search = searchValue;
 
     dispatch(
       fetchPizzas({
@@ -84,7 +85,7 @@ const Home: FC = () => {
 
     getPizzas();
     // isMounted.current = true;
-  }, [categoryId, sortType, currentPage]);
+  }, [categoryId, sort.sortProperty, searchValue, currentPage]);
 
   const pizzas = items.map((obj: any) => <PizzaBlock key={obj.id} {...obj} /> );
   const skeletons = [...new Array(6)].map((_, index) => <Skeleton key={index} />);
@@ -93,7 +94,7 @@ const Home: FC = () => {
     <div className="container">
       <div className="content__top">
         <Categories value={categoryId} onChangeCategory={onChangeCategory} />
-        <Sort />
+        <Sort value = {sort}/>
       </div>
       <h2 className="content__title">Все пиццы</h2>
       {

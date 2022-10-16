@@ -11,7 +11,7 @@ const Header = () => {
   const totalCount = items.reduce((sum: number, item: any) => item.count + sum, 0);
 
   const { pathname } = useLocation();
- 
+
   return (
     <div className="header">
       <div className="container">
@@ -22,7 +22,7 @@ const Header = () => {
             <p>самая вкусная пицца во вселенной</p>
           </div>
         </Link>
-        <Search />
+        {pathname !== '/cart' && <Search />}
         <div className="header__cart">
           {pathname !== '/cart' && <Link to="/cart" className="button button--cart">
             <span>{totalPrice} ₽</span>

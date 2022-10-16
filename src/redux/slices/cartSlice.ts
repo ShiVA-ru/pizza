@@ -46,12 +46,8 @@ const cartSlice = createSlice({
     minusItem(state, action: PayloadAction<string>) {
       const findItem = state.items.find(obj => obj.id === action.payload);
 
-      if (findItem && findItem.count > 1) {
+      if (findItem) {
         findItem.count--;
-      } else {
-        if (window.confirm('Вы действительно хотите удалить пиццу?')) {
-          state.items = state.items.filter(obj => obj.id !== action.payload);
-        }
       }
     },
     removeItem(state, action: PayloadAction<string>) {

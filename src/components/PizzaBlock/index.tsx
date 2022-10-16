@@ -21,7 +21,11 @@ const PizzaBlock: FC<PizzaBlockProps> = ({id, title, price, imageUrl, types, siz
   const [activeType, setActiveType] = useState(0);
   const [activeSize, setActiveSize] = useState(0);
 
-    const addedCount = cartItem ? cartItem.count : 0;
+  const addedCount = cartItem ? cartItem.count : 0;
+  if (addedCount) {
+    console.log(addedCount, title)
+
+  }
 
   const onClickAdd = () => {
     const item: CartItemType = {
@@ -78,7 +82,7 @@ const PizzaBlock: FC<PizzaBlockProps> = ({id, title, price, imageUrl, types, siz
               />
             </svg>
             <span>Добавить</span>
-            {addedCount && addedCount > 0 && <i>{addedCount}</i>}
+            {addedCount > 0 && <i>{addedCount}</i>}
           </button>
         </div>
       </div>

@@ -22,6 +22,7 @@ const Search: FC = () => {
     setValue('');
     inputRef.current?.focus();
   }
+  
   const onChangeInput = (event: ChangeEvent<HTMLInputElement>) => {
     setValue(event.target.value);
     updateSearchValue(event.target.value);
